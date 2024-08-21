@@ -1,0 +1,27 @@
+# Archivos de log
+*.log
+*.pid
+
+# Archivos de base de datos
+*.db
+
+# Directorios del entorno virtual
+venv/
+
+# Archivos de configuración de Airflow
+airflow-scheduler.err
+airflow-webserver-monitor.pid
+# Ignorar archivos de Airflow Webserver
+airflow-webserver*
+
+# Directorios y archivos generados por herramientas externas
+kafka_2.12-3.8.0/
+spark-3.5.2-bin-hadoop3/
+
+# Archivos temporales y locales
+*.tmp
+*.swp
+*.swo
+
+# Configuración de password y datos sensibles
+standalone_admin_password.txt
