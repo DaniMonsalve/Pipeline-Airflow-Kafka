@@ -25,3 +25,8 @@ spark-3.5.2-bin-hadoop3/
 
 # Configuración de password y datos sensibles
 standalone_admin_password.txt
+
+# Ignorar archivos y directorios innecesarios
+airflow-scheduler.out
+dags/__pycache__/
+logs/
