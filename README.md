@@ -5,20 +5,22 @@ Guía utilizada para configurar un pipeline con Apache Airflow, Apache Kafka y A
 # Descripción del DAG
 El DAG de Airflow, llamado DAG_API_randomuser, automatiza la extracción, transformación y envío de datos desde una API externa ("https://randomuser.me/api/"). La ejecución del DAG sigue estos pasos:
 
-    Extracción de Datos (extractor): La primera tarea, get_data, realiza una solicitud HTTP a la API de randomuser.me para obtener datos de usuario en formato JSON. Los datos crudos obtenidos de la API se imprimen en la consola y se almacenan en XCom, lo que permite que las tareas subsiguientes accedan a ellos.
+Extracción de Datos (extractor): La primera tarea, get_data, realiza una solicitud HTTP a la API de randomuser.me para obtener datos de usuario en formato JSON. Los datos crudos obtenidos de la API se imprimen en la consola y se almacenan en XCom, lo que permite que las tareas subsiguientes accedan a ellos.
 
-    Transformación de Datos (transformacion): La segunda tarea, format_data, toma los datos crudos desde XCom y los transforma en un formato estructurado. Se extraen campos específicos como el nombre, dirección, correo electrónico, y otros detalles relevantes del usuario. Los datos formateados se imprimen en la consola y se vuelven a almacenar en XCom para su uso posterior.
+Transformación de Datos (transformacion): La segunda tarea, format_data, toma los datos crudos desde XCom y los transforma en un formato estructurado. Se extraen campos específicos como el nombre, dirección, correo electrónico, y otros detalles relevantes del usuario. Los datos formateados se imprimen en la consola y se vuelven a almacenar en XCom para su uso posterior.
 
-    Envío a Kafka (envio_kafka): La última tarea, json_serialization, recupera los datos formateados desde XCom y los convierte en una cadena JSON. Esta cadena se envía a un tópico de Kafka denominado airflow-spark usando un productor de Kafka configurado. Esta tarea asegura que los datos procesados estén disponibles para otros sistemas o aplicaciones que consumen mensajes desde Kafka.
+Envío a Kafka (envio_kafka): La última tarea, json_serialization, recupera los datos formateados desde XCom y los convierte en una cadena JSON. Esta cadena se envía a un tópico de Kafka denominado airflow-spark usando un productor de Kafka configurado. Esta tarea asegura que los datos procesados estén disponibles para otros sistemas o aplicaciones que consumen mensajes desde Kafka.
+
+<img width="948" alt="Resultado final graph" src="https://github.com/user-attachments/assets/8198ce76-c931-4260-bfaa-a511ca7eb588">
 
 
 ## Estructura del Repositorio
-.
-├── dags
-│   ├── dag_1
-├── airflow.cfg
-├── webserver_config.py
-├── CONSOLA_OUTPUT.md
+    .
+    ├── dags
+    │   ├── dag_1
+    ├── airflow.cfg
+    ├── webserver_config.py
+    ├── CONSOLA_OUTPUT.md
 
 ## Presentación de resultado:
 
