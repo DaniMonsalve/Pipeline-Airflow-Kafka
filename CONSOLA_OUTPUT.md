@@ -1,98 +1,95 @@
-# Configuración del Pipeline de Airflow
+# Documentación de Salidas de Consola y Comentarios
 
-Guía utilizada para configurar un pipeline con Apache Airflow, Apache Kafka y Apache Spark en un entorno WSL.
+Este documento proporciona las salidas de la consola y los comentarios asociados a cada comando ejecutado durante el proceso de configuración del pipeline.
 
-# Descripción del DAG
-El DAG de Airflow, llamado DAG_API_randomuser, automatiza la extracción, transformación y envío de datos desde una API externa ("https://randomuser.me/api/"). La ejecución del DAG sigue estos pasos:
-
-    Extracción de Datos (extractor): La primera tarea, get_data, realiza una solicitud HTTP a la API de randomuser.me para obtener datos de usuario en formato JSON. Los datos crudos obtenidos de la API se imprimen en la consola y se almacenan en XCom, lo que permite que las tareas subsiguientes accedan a ellos.
-
-    Transformación de Datos (transformacion): La segunda tarea, format_data, toma los datos crudos desde XCom y los transforma en un formato estructurado. Se extraen campos específicos como el nombre, dirección, correo electrónico, y otros detalles relevantes del usuario. Los datos formateados se imprimen en la consola y se vuelven a almacenar en XCom para su uso posterior.
-
-    Envío a Kafka (envio_kafka): La última tarea, json_serialization, recupera los datos formateados desde XCom y los convierte en una cadena JSON. Esta cadena se envía a un tópico de Kafka denominado airflow-spark usando un productor de Kafka configurado. Esta tarea asegura que los datos procesados estén disponibles para otros sistemas o aplicaciones que consumen mensajes desde Kafka.
-
-
-## Estructura del Repositorio
-.
-├── dags
-│   ├── dag_1
-├── airflow.cfg
-├── webserver_config.py
-├── CONSOLA_OUTPUT.md
-
-## Presentación de resultado:
-
-Acceder al documento CONSOLA_OUTPUT.md para consultar las salidas de la consola y los comentarios asociados a cada comando ejecutado, así como otras evidencias del correcto funcionamiento del proceso.
 
 ## 1. Crear y configurar el entorno
 
 ```bash
 # Crear un directorio para el proyecto y navegar a él
-mkdir ~/airflow_pipeline
-cd ~/airflow_pipeline
+dani@LAPTOP-73U6RBEH:~$ mkdir ~/airflow_pipeline
+dani@LAPTOP-73U6RBEH:~$ cd ~/airflow_pipeline
 
 # Crear un entorno virtual
-virtualenv venv
-source venv/bin/activate
+dani@LAPTOP-73U6RBEH:~/airflow_pipeline$ virtualenv venv
+created virtual environment CPython3.10.12.final.0-64 in 489ms
+  creator CPython3Posix(dest=/home/dani/airflow_pipeline/venv, clear=False, no_vcs_ignore=False, global=False)
+  seeder FromAppData(download=False, pip=bundle, setuptools=bundle, wheel=bundle, via=copy, app_data_dir=/home/dani/.local/share/virtualenv)
+    added seed packages: pip==24.1, setuptools==70.1.0, wheel==0.43.0
+  activators BashActivator,CShellActivator,FishActivator,NushellActivator,PowerShellActivator,PythonActivator
 
-# Establecer la variable de entorno AIRFLOW_HOME
-export AIRFLOW_HOME=$(pwd)
+# Activar el entorno virtual
+dani@LAPTOP-73U6RBEH:~/airflow_pipeline$ source venv/bin/activate
+(venv) dani@LAPTOP-73U6RBEH:~/airflow_pipeline$ export AIRFLOW_HOME=$(pwd)
 
 # Instalar Apache Airflow
-pip install apache-airflow
+(venv) dani@LAPTOP-73U6RBEH:~/airflow_pipeline$ pip install apache-airflow
+...
 
-# Iniciar Airflow en modo standalone (para desarrollo)
-airflow standalone
+# Iniciar Airflow en modo standalone
+(venv) dani@LAPTOP-73U6RBEH:~/airflow_pipeline$ airflow standalone
+standalone | Airflow is ready
+standalone | Login with username: admin  password: 3ZcCYCWCyHRpzHSV
+standalone | Airflow Standalone is for development purposes only. Do not use this in production!
+^Cstandalone | Shutting down components
+standalone | Complete
 
 # Descargar Apache Kafka
-wget https://downloads.apache.org/kafka/3.8.0/kafka_2.12-3.8.0.tgz
+(venv) dani@LAPTOP-73U6RBEH:~/airflow_pipeline$ wget https://downloads.apache.org/kafka/3.8.0/kafka_2.12-3.8.0.tgz
 
 # Descomprimir el archivo
-tar -xzvf kafka_2.12-3.8.0.tgz
-
+(venv) dani@LAPTOP-73U6RBEH:~/airflow_pipeline$ tar -xzvf kafka_2.12-3.8.0.tgz
+...
 # Eliminar el archivo comprimido
-rm kafka_2.12-3.8.0.tgz
+(venv) dani@LAPTOP-73U6RBEH:~/airflow_pipeline$ rm kafka_2.12-3.8.0.tgz
 
 # Iniciar Zookeeper en una terminal
-cd kafka_2.12-3.8.0
-bin/zookeeper-server-start.sh config/zookeeper.properties
+dani@LAPTOP-73U6RBEH:~/airflow_pipeline/kafka_2.12-3.8.0$ bin/zookeeper-server-start.sh config/zookeeper.properties
 
 # En otra terminal, iniciar el servidor Kafka
-bin/kafka-server-start.sh config/server.properties
+dani@LAPTOP-73U6RBEH:~/airflow_pipeline/kafka_2.12-3.8.0$ bin/kafka-server-start.sh config/server.properties
 
 # Crear un nuevo topic
-bin/kafka-topics.sh --create --topic quickstart-events --bootstrap-server localhost:9092
+dani@LAPTOP-73U6RBEH:~/airflow_pipeline/kafka_2.12-3.8.0$ bin/kafka-topics.sh --create --topic quickstart-events --bootstrap-server localhost:9092
+Created topic quickstart-events.
 
 # Producir un mensaje al topic
-bin/kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092
-# Escribe tu mensaje y presiona Ctrl+D para salir
+dani@LAPTOP-73U6RBEH:~/airflow_pipeline/kafka_2.12-3.8.0$ bin/kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092
+>Este es el primer topic enviado
+>
 
 # Consumir el mensaje desde el topic
-bin/kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092
+dani@LAPTOP-73U6RBEH:~/airflow_pipeline/kafka_2.12-3.8.0$ bin/kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092
+Este es el primer topic enviado
 
 # Descargar Spark
-wget https://dlcdn.apache.org/spark/spark-3.5.2/spark-3.5.2-bin-hadoop3.tgz
+(venv) dani@LAPTOP-73U6RBEH:~/airflow_pipeline$ wget https://dlcdn.apache.org/spark/spark-3.5.2/spark-3.5.2-bin-hadoop3.tgz
 
 # Descomprimir el archivo
-tar -xzvf spark-3.5.2-bin-hadoop3.tgz
+(venv) dani@LAPTOP-73U6RBEH:~/airflow_pipeline$ tar -xzvf spark-3.5.2-bin-hadoop3.tgz
+...
 
 # Eliminar el archivo comprimido
-rm spark-3.5.2-bin-hadoop3.tgz
+(venv) dani@LAPTOP-73U6RBEH:~/airflow_pipeline$ rm spark-3.5.2-bin-hadoop3.tgz
 
 # Renombrar el archivo de configuración
-cd spark-3.5.2-bin-hadoop3/conf
-mv spark-defaults.conf.template spark-defaults.conf
+dani@LAPTOP-73U6RBEH:~/airflow_pipeline/spark-3.5.2-bin-hadoop3/conf$ mv spark-defaults.conf.template spark-defaults.conf
 
 # Iniciar el master de Spark
-cd ..
-./sbin/start-master.sh
+dani@LAPTOP-73U6RBEH:~/airflow_pipeline/spark-3.5.2-bin-hadoop3$ ./sbin/start-master.sh
+starting org.apache.spark.deploy.master.Master, logging to /home/dani/airflow_pipeline/spark-3.5.2-bin-hadoop3/logs/spark-dani-org.apache.spark.deploy.master.Master-1-LAPTOP-73U6RBEH.out
 
 # Iniciar el worker de Spark
-./sbin/start-worker.sh spark://LAPTOP-73U6RBEH:7077
+dani@LAPTOP-73U6RBEH:~/airflow_pipeline/spark-3.5.2-bin-hadoop3$ ./sbin/start-worker.sh spark://LAPTOP-73U6RBEH:7077
 
 # Crear un nuevo topic para Airflow
-cd ~/airflow_pipeline/kafka_2.12-3.8.0
-bin/kafka-topics.sh --create --topic airflow-spark --bootstrap-server localhost:9092
+dani@LAPTOP-73U6RBEH:~/airflow_pipeline/kafka_2.12-3.8.0$ bin/kafka-topics.sh --create --topic airflow-spark --bootstrap-server localhost:9092
+Created topic airflow-spark.
 
 # Producir mensajes al topic
-bin/kafka-console-producer.sh --topic airflow-spark --bootstrap-server localhost:9092
+dani@LAPTOP-73U6RBEH:~/airflow_pipeline/kafka_2.12-3.8.0$ bin/kafka-console-producer.sh --topic airflow-spark --bootstrap-server localhost:9092
+
+# Consumir mensajes del topic 'airflow-spark'
+dani@LAPTOP-73U6RBEH:~/airflow_pipeline/kafka_2.12-3.8.0$ bin/kafka-console-consumer.sh --topic airflow-spark --from-beginning --bootstrap-server localhost:9092
+{"id": "f02bbbc6-f204-48da-9010-2bf82dc34186", "first_name": "Savitha", "last_name": "Keshri", "gender": "female", "address": "6471 Janpath, New Delhi, Goa, India", "post_code": 69863, "email": "savitha.keshri@example.com", "username": "lazyladybug659", "dob": "1950-03-10T13:24:16.856Z", "registered_date": "2005-04-08T18:37:32.207Z", "phone": "9645427035", "picture": "https://randomuser.me/api/portraits/med/women/82.jpg"}
+...
