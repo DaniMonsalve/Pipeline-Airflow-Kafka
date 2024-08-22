@@ -165,3 +165,5 @@ Karfka consumer:
 <img width="953" alt="Kafka_Consumer" src="https://github.com/user-attachments/assets/1413ffbd-be20-447b-980f-1d84096a013e">
 
 Guardado en CouchDB:
+<img width="952" alt="guardado en CouchDB" src="https://github.com/user-attachments/assets/a41d185c-e38d-4cd8-aeeb-406cfcb80014">
+
