@@ -144,7 +144,16 @@ Se crea un topic con el mismo nombre que el que definimos en el archivo .py a ej
 {"id": "07556eeb-1f5b-45f9-ba74-b9b51efe52dd", "first_name": "Nadia", "last_name": "Opseth", "gender": "female", "address": "3320 Skabos vei, Lang\u00f8rjan, Tr\u00f8ndelag, Norway", "post_code": "5036", "email": "nadia.opseth@example.com", "username": "bigdog344", "dob": "1998-06-05T16:45:36.374Z", "registered_date": "2019-05-18T10:55:33.530Z", "phone": "70017997", "picture": "https://randomuser.me/api/portraits/med/women/93.jpg"}
 ...
 ```
-En Airflow se pueden comprobar el correcto funcionamiento de igual manera:
+Por último, los mensajes consumidos por Kafka se envían a una base de datos CouchDB donde son almacenado de forma automática:
+```
+(venv) dani@LAPTOP-73U6RBEH:~/airflow_pipeline/spark-3.5.2-bin-hadoop3$ ./bin/spark-submit ~/airflow_pipeline/app/app.py
+24/08/22 16:56:14 WARN Utils: Your hostname, LAPTOP-73U6RBEH resolves to a loopback address: 127.0.1.1; using 172.18.178.191 instead (on interface eth0)
+24/08/22 16:56:14 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+Mensaje JSON recibido: {"id": "f02bbbc6-f204-48da-9010-2bf82dc34186", "first_name": "Savitha", "last_name": "Keshri", "gender": "female", "address": "6471 Janpath, New Delhi, Goa, India", "post_code": 69863, "email": "savitha.keshri@example.com", "username": "lazyladybug659", "dob": "1950-03-10T13:24:16.856Z", "registered_date": "2005-04-08T18:37:32.207Z", "phone": "9645427035", "picture": "https://randomuser.me/api/portraits/med/women/82.jpg"}
+Mensaje guardado en CouchDB.
+...
+```
+El funcionamiento del pipeline en Airflow se ve de la siguiente manera:
 <img width="948" alt="Resultado final graph" src="https://github.com/user-attachments/assets/0efffcb2-e44c-4ff6-918e-52cd2b0a3ab0"> 
 
 <img width="944" alt="Event_log" src="https://github.com/user-attachments/assets/d79d64c6-2374-4924-88a0-3433ef73428c">
@@ -155,4 +164,4 @@ En Airflow se pueden comprobar el correcto funcionamiento de igual manera:
 Karfka consumer:
 <img width="953" alt="Kafka_Consumer" src="https://github.com/user-attachments/assets/1413ffbd-be20-447b-980f-1d84096a013e">
 
-
+Guardado en CouchDB:

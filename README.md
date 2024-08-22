@@ -98,3 +98,6 @@ bin/kafka-topics.sh --create --topic airflow-spark --bootstrap-server localhost:
 
 # Producir mensajes al topic
 bin/kafka-console-producer.sh --topic airflow-spark --bootstrap-server localhost:9092
+
+#Ejecución de app.py:
+ ./bin/spark-submit ~/airflow_pipeline/app/app.py
