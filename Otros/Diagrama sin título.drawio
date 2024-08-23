@@ -1,0 +1,49 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" version="24.7.7">
+  <diagram name="Página-1" id="gVWL0LZ6J4jUiAH6mWAj">
+    <mxGraphModel>
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="Airflow" style="whiteSpace=wrap;strokeWidth=2;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="671" width="126" height="104" as="geometry" />
+        </mxCell>
+        <mxCell id="3" value="Airflow" style="rounded=1;whiteSpace=wrap;arcSize=50;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="696" y="35" width="76" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="4" value="Proceso en Python" style="whiteSpace=wrap;strokeWidth=2;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="417" width="204" height="104" as="geometry" />
+        </mxCell>
+        <mxCell id="5" value="Proceso en Python" style="rounded=1;whiteSpace=wrap;arcSize=50;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="442" y="35" width="154" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="6" value="Pipeline" style="whiteSpace=wrap;strokeWidth=2;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="236" width="131" height="104" as="geometry" />
+        </mxCell>
+        <mxCell id="7" value="Pipeline" style="rounded=1;whiteSpace=wrap;arcSize=50;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="261" y="35" width="81" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="8" value="Informacion de API randomuser" style="whiteSpace=wrap;strokeWidth=2;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="-19" width="224" height="104" as="geometry" />
+        </mxCell>
+        <mxCell id="9" value="API randomuser" style="rounded=1;whiteSpace=wrap;arcSize=50;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="25" y="35" width="136" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="10" value="" style="curved=1;startArrow=none;endArrow=block;exitX=1;exitY=0.5;entryX=0.01;entryY=0.5;" edge="1" parent="1" source="9" target="7">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="11" value="" style="curved=1;startArrow=none;endArrow=block;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="7" target="5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="12" value="" style="curved=1;startArrow=none;endArrow=block;exitX=1;exitY=0.5;entryX=0.01;entryY=0.5;" edge="1" parent="1" source="5" target="3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
