@@ -2,6 +2,9 @@
 
 Guía utilizada para configurar un pipeline con Apache Airflow, Apache Kafka y Apache Spark en un entorno WSL.
 
+![Diagrama_2 drawio](https://github.com/user-attachments/assets/39fd4993-d2b7-4c72-b58e-b0a98130a51e)
+
+
 # Descripción del DAG
 El DAG de Airflow, llamado DAG_API_randomuser, automatiza la extracción, transformación y envío de datos desde una API externa ("https://randomuser.me/api/"). La ejecución del DAG sigue estos pasos:
 
